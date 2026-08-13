@@ -410,7 +410,10 @@
 \newenvironment{projects}{%
   \begin{longtable}{l}
 }{%
-  \end{longtable}
+  \end{longtable}%
+  % each \project ends with a \medskip so entries breathe; cancel it after the
+  % last one so the gap before the next section matches every other section
+  \vspace{-\medskipamount}%
 }
 
 % Define the 'project' entry in the 'projects' environment
@@ -429,9 +432,14 @@
      % If input #3 is not empty
      #3\\
     \fi%
-    #4\smallskip\\
     % \textbf{Technical Responsibility: }#5\smallskip\\
-    \footnotesize{\foreach \n in {#5}{\cvtag{\n}}}\\
+    \ifblank{#5}{%
+      #4%
+    }{%
+      #4\smallskip\\
+      \footnotesize{\foreach \n in {#5}{\cvtag{\n}}}%
+    }%
+    \par\vspace{\medskipamount}%
   \end{minipage}
   \\*
 }
