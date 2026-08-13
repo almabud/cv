@@ -366,16 +366,12 @@
 %                    }
 %                    {<Technology list>}
 \newcommand\experience[7]{
-  \textbf{#1} & \textbf{#2, #3, #4} \\*
-  \textbf{#5} & \begin{minipage}[t]{\rightcolumnlength}
-                 #6
-               \end{minipage}
-  \ifstrempty{#7}
-    {\\}
-    {\\*
-     & \footnotesize{\foreach \n in {#7}{\cvtag{\n}}} \\
-    }
-}
+  \textbf{#1}    & \textbf{#2, #3, #4}   								\\*
+  \textbf{#5}    & \begin{minipage}[t]{\rightcolumnlength}
+  					         #6
+                   \end{minipage}										\\*
+                 & \footnotesize{\foreach \n in {#7}{\cvtag{\n}}} 	\\
+  }
   
   \newcommand\mentoring[4]{
   \textbf{#1}    & \textbf{#2}   								\\*
