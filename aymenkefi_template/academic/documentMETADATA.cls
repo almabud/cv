@@ -298,7 +298,10 @@
         \idphoto
       \end{minipage}
     }{}
-    \bigskip
+    % no trailing skip: the gap down to the first section comes from
+    % \titlespacing, same as every other section boundary. The minipage still
+    % contributes a \parskip on the way out, so take that back.
+    \par\vspace{-\parskip}%
   }
 }
 
