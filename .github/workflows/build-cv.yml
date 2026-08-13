@@ -21,6 +21,12 @@ jobs:
 
       - name: Compile CVs
         uses: xu-cheng/latex-action@v4
+        env:
+          # Pin the build clock so an unchanged cv.tex yields a byte-identical
+          # cv.pdf; otherwise LuaTeX stamps /CreationDate, /ModDate and /ID with
+          # the wall clock and the commit-back step fires on every run.
+          SOURCE_DATE_EPOCH: "0"
+          FORCE_SOURCE_DATE: "1"
         with:
           root_file: "*/*/cv.tex"
           work_in_root_file_dir: true
