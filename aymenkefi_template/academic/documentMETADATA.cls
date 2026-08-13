@@ -332,6 +332,26 @@
   \textbf{#1} &   #2\\ 
 }
 
+% Define the 'languages' environment
+% Bullets are opt-in, not mandatory: the body is an indented block that needs
+% no \item, and every \item that IS given starts a new \faAngleRight line at
+% the same geometry as \setlist[itemize,1] above.
+\newenvironment{languages}{%
+  % a list opens with a \parskip of leading; a plain block does not, so put it
+  % back before zeroing \parskip for the body
+  \par\addvspace{\parskip}%
+  \begingroup
+  \setlength{\parskip}{0pt}%
+  \setlength{\parindent}{0pt}%
+  \setlength{\leftskip}{2em}%
+  \renewcommand{\item}{%
+    \par\leavevmode\llap{\faAngleRight\hspace{\labelsep}}\ignorespaces
+  }%
+  \ignorespaces
+}{%
+  \par\endgroup
+}
+
 % Define a new column type for the scholarship environment
 \newcolumntype{Y}{>{\raggedleft}p{\leftcolumn}}
 
