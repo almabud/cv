@@ -1,0 +1,63 @@
+name: Build CV PDFs
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Compile LaTeX CVs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Compile CVs
+        uses: xu-cheng/latex-action@v4
+        with:
+          root_file: "*/*/cv.tex"
+          work_in_root_file_dir: true
+          latexmk_use_lualatex: true
+
+      - name: Verify every CV produced a PDF
+        run: |
+          set -euo pipefail
+          missing=0
+          for tex in */*/cv.tex; do
+            pdf="${tex%.tex}.pdf"
+            if [ ! -s "$pdf" ]; then
+              echo "::error file=$tex::expected $pdf was not generated"
+              missing=1
+            else
+              echo "ok: $pdf ($(stat -c%s "$pdf") bytes)"
+            fi
+          done
+          exit "$missing"
+
+      - name: Upload compiled PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: compiled-cvs
+          path: "*/*/cv.pdf"
+          if-no-files-found: error
+
+      - name: Commit PDFs back to main
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- */*/cv.pdf
+          if git diff --cached --quiet; then
+            echo "PDFs unchanged; nothing to commit"
+          else
+            git commit -m "chore: rebuild CV PDFs [skip ci]"
+            git push
+          fi
