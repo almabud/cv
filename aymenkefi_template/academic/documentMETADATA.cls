@@ -298,10 +298,11 @@
         \idphoto
       \end{minipage}
     }{}
-    % no trailing skip: the gap down to the first section comes from
-    % \titlespacing, same as every other section boundary. The minipage still
-    % contributes a \parskip on the way out, so take that back.
-    \par\vspace{-\parskip}%
+    % the gap down to the first section is \titlespacing, same as every other
+    % section boundary, plus 6pt: the header is its own block and needs to read
+    % as separate from the body. The minipage also contributes a \parskip on
+    % the way out, so take that back here.
+    \par\vspace{\dimexpr 6pt-\parskip\relax}%
   }
 }
 
