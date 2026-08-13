@@ -108,8 +108,18 @@
 %\font\fb=''[cmr10]''                      % for use with \LaTeX command
 
 % Setup CV sections
+% Every gap between sections comes from the 'before' length here and nowhere
+% else: longtable's own padding is zeroed just below, and no section ends with
+% a trailing \emptySeparator. Change this one value to retune the whole CV.
 \titleformat{\section}{\Large\raggedright}{}{0em}{}[\titlerule]
-\titlespacing{\section}{0pt}{2pt}{2pt}
+\titlespacing{\section}{0pt}{12pt}{2pt}
+
+% longtable pads itself with \bigskipamount before and after. The trailing pad
+% would stack on top of \titlespacing and make longtable-based sections
+% (experiences, projects) sit further from the next heading than tabular-based
+% ones, so zero it. \LTpre stays: it is what keeps the first row clear of the
+% section rule.
+\setlength\LTpost{0pt}
 
 % Configure list
 \setlist[itemize,1]{label=\faAngleRight, nosep, leftmargin=2em} 
