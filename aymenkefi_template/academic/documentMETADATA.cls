@@ -387,8 +387,13 @@
   \ifblank{#7}{%
     \\
   }{%
+    % \\[<dim>] is ignored inside longtable, so the breathing room above the
+    % tag row has to come from vertical glue inside the cell itself
     \\*
-    & \footnotesize{\foreach \n in {#7}{\cvtag{\n}}} \\
+    & \begin{minipage}[t]{\rightcolumnlength}
+        \vspace{-4pt}
+        \footnotesize{\foreach \n in {#7}{\cvtag{\n}}}
+      \end{minipage} \\
   }%
 }
   
