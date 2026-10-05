@@ -16,3 +16,6 @@
 
 # macOS
 .DS_Store
+
+# Private SOP material, kept in its own private repo
+SOP/
