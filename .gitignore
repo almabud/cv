@@ -19,3 +19,6 @@
 
 # Private SOP material, kept in its own private repo
 SOP/
+
+# IDE settings
+.idea/
