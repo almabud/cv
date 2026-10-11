@@ -33,17 +33,25 @@ jobs:
           # variables never reach the compiler.
           pre_compile: "export SOURCE_DATE_EPOCH=0 FORCE_SOURCE_DATE=1"
 
-      - name: Verify every CV produced a PDF
+      # cv.tex compiles to cv.pdf. Publish it as CV_Almabud_Juwal_<Variant>.pdf,
+      # with the variant taken from the folder name (professional-v1 becomes
+      # Professional_v1), so a downloaded file is identifiable on its own.
+      - name: Verify every CV produced a PDF and rename it
         run: |
           set -euo pipefail
           missing=0
           for tex in */*/cv.tex; do
-            pdf="${tex%.tex}.pdf"
+            dir="$(dirname "$tex")"
+            pdf="$dir/cv.pdf"
+            variant="$(basename "$dir")"
+            variant="$(printf '%s' "${variant:0:1}" | tr '[:lower:]' '[:upper:]')${variant:1}"
+            named="$dir/CV_Almabud_Juwal_${variant//-/_}.pdf"
             if [ ! -s "$pdf" ]; then
               echo "::error file=$tex::expected $pdf was not generated"
               missing=1
             else
-              echo "ok: $pdf ($(stat -c%s "$pdf") bytes)"
+              mv -f "$pdf" "$named"
+              echo "ok: $named ($(stat -c%s "$named") bytes)"
             fi
           done
           exit "$missing"
@@ -52,7 +60,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: compiled-cvs
-          path: "*/*/cv.pdf"
+          path: "*/*/CV_Almabud_Juwal_*.pdf"
           if-no-files-found: error
 
       - name: Commit PDFs back to main
@@ -61,7 +69,7 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- */*/cv.pdf
+          git add -- */*/CV_Almabud_Juwal_*.pdf
           if git diff --cached --quiet; then
             echo "PDFs unchanged; nothing to commit"
           else

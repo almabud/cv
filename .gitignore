@@ -22,3 +22,6 @@ SOP/
 
 # IDE settings
 .idea/
+
+# Local build output. CI publishes it as CV_Almabud_Juwal_<Variant>.pdf
+cv.pdf
