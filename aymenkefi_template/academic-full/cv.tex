@@ -1,0 +1,9 @@
+% Academic CV with the full education history (B.Sc., HSC, SSC), for
+% applications that ask to trace the applicant's whole education.
+% Everything except section_education.tex comes from ../academic, so the two
+% CVs stay in sync; fonts/ is a symlink to ../academic/fonts.
+\makeatletter\def\input@path{{../academic/}}\makeatother
+% The two extra school lines would push Languages onto a third page;
+% slightly smaller top and bottom margins keep it at two.
+\AddToHook{begindocument/end}{\newgeometry{margin=1.5cm,top=0.9cm,bottom=0.9cm}}
+\input{../academic/cv}
